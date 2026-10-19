@@ -6,7 +6,7 @@ Extend the existing working `index.html` into a high-quality editorial interacti
 
 ## UI grammar: VI / Visual Interaction
 
-- Semantic colors follow the latest VLADCHOK brief: green = confirmed facts/results; blue = geography, connections and information; yellow = opportunities/uncertainty; violet = models/counterfactual hypotheses; red = risks/constraints; neutral = text and interface.
+- Semantic colors follow the latest BERING brief: green = confirmed facts/results; blue = geography, connections and information; yellow = opportunities/uncertainty; violet = models/counterfactual hypotheses; red = risks/constraints; neutral = text and interface.
 - Separate state (what is selected), action (what changes), and evidence (what can be trusted).
 - Show a visual model before lengthy prose. Prefer concise labels, one idea per component, 80% ASD-STE100-style direct wording in Russian.
 - Inherit recognizable interface patterns; avoid indiscriminate gradients, glow, fake 3D, meaningless motion, and decorative charts.

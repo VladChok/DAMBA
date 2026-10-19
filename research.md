@@ -66,3 +66,17 @@ This split is invented explicitly as MODEL. No country or bank is claimed to hav
 Natural Earth coastline data (public domain) is projected locally with D3 during asset preparation, not loaded as a live map library. The globe uses 1:110m outlines, the local plate 1:50m. Coordinates in the cover caption are approximate geographic orientation. No country boundaries or engineering alignment are claimed.
 
 The two narrative paths have no quantitative vertical axis. The alternative does not assign construction dates to its intermediate steps. Its dependencies include enforceable contracts, debt service, access railways, energy, demand, local and Indigenous participation, environmental review, relations with Japan and Europe, and international governance. Success, failure, and non-completion remain possible. No GDP, investment-return, welfare, or climate-impact numbers are fabricated.
+
+## Visual revision: finance and Russian politics
+
+The cumulative funding chart uses fixed axes of 0–30 years and 0–300 billion hypothetical dollars. At time t within the selected horizon T, total contributions are budget × t / T and foreign contributions are foreign capital × t / T. Lines stop at T. Uniform annual contributions are an explicit model assumption, not a construction schedule. Expense bars remain fixed shares of the scenario budget and are now visible without expanding a disclosure.
+
+Political branches are qualitative author analysis, without scores or probabilities:
+
+- Contracts plus independent arbitration could support more predictable rules; a closed contractor consortium is a possible adverse outcome.
+- Regional participation in revenues could increase the Far East's bargaining role; a centrally controlled project could have the opposite effect.
+- Mutually beneficial transit could increase incentives for compromise; interstate conflict could still freeze the project.
+
+None of these mechanisms establishes democratization, preservation of the USSR, peace, or a change in specific later events. The three sketches are illustrative possibilities, not exhaustive or equally likely outcomes.
+
+Two factual anchors are independent of these hypotheses: the constitution's adoption on 12 December 1993, verified in the [official MChS publication](https://mchs.gov.ru/dokumenty/bazovye-normativnye-pravovye-akty/federalnye-konstitucionnye-zakony/8357), and creation of the federal-district framework by Decree 849 on 13 May 2000. The [decree's English text is archived at the WTO](https://www.wto.org/english/thewto_e/acc_e/rus_e/wtaccrus58_leg_87.pdf); indexed primary text was available but direct PDF retrieval returned 402. The [Federal Tax Service's institutional history](https://www.nalog.gov.ru/rn27/about_fts/fts/history_fts/history_ufns/) independently confirms the date and original seven districts. The site makes no causal claim linking these events to the absence of a crossing.

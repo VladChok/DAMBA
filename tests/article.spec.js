@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
+import { readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 
 test('six chapters, navigation, source disclosures and both stories work by keyboard', async ({ page }) => {
@@ -17,7 +18,7 @@ test('six chapters, navigation, source disclosures and both stories work by keyb
   await expect(page).toHaveURL(/future=alternative/);
   await page.keyboard.press('ArrowLeft'); await expect(page.locator('#real')).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('#future-events')).toContainText('Россия вступает в ВТО');
-  await page.locator('.sources summary').click(); await expect(page.locator('.sources')).not.toHaveAttribute('open');
+  await expect(page.locator('.sources')).not.toHaveAttribute('open');
   await page.locator('#timeline-source').click(); await expect(page.locator('.sources')).toHaveAttribute('open', '');
   await expect(page.locator('#source-collapse')).toBeInViewport();
   expect(errors).toEqual([]);
@@ -34,6 +35,11 @@ test('sliders update totals, partner widths, accessible description, categories 
   await expect(page.locator('#capital-desc')).toContainText('СССР: $300 млрд');
   await page.locator('#years').focus(); await page.keyboard.press('Home');
   await expect(page.locator('#annual')).toHaveText('$60 млрд');
+  await expect(page.locator('#funding-desc')).toContainText('за 5 лет');
+  await expect(page.locator('#funding-total')).toHaveText('$300 млрд');
+  await expect(page.locator('#funding-foreign')).toHaveText('$0 млрд');
+  expect(Number(await page.locator('#funding-end').getAttribute('cx'))).toBeCloseTo(40 + 325 / 6);
+  await expect(page.locator('#funding-end')).toHaveAttribute('cy', '30');
   await page.reload(); await expect(page.locator('#cost')).toHaveValue('300');
   await page.locator('#reset-model').click(); await expect(page.locator('#annual')).toHaveText('$8 млрд');
   await expect(page.locator('#partner-svg-2')).toHaveText('$21,6 млрд · 18%');
@@ -81,6 +87,12 @@ test('standalone export works from disk with no network', async ({ page }) => {
   await page.context().setOffline(true);
   const errors = []; page.on('pageerror', error => errors.push(error.message));
   await page.goto(pathToFileURL(file).href);
+  expect(readFileSync(file, 'utf8')).not.toMatch(/github\.com\/|[A-Z]:[\\/]Users[\\/]/i);
+  await expect(page.locator('.cover-meta')).toContainText('BERING · № 001');
+  await expect(page.locator('.footer-bottom .wordmark')).toHaveText('BERING / 1990');
+  await expect(page.locator('.policy-row')).toHaveCount(3);
+  await expect(page.locator('#politics')).toContainText('не гарантирует демократизацию');
+  await expect(page.locator('.expense-chart')).toBeVisible();
   await page.locator('#alt').click();
   await expect(page.locator('#scenario-title')).toContainText('об исследовании');
   await page.locator('#cost').focus(); await page.keyboard.press('End');

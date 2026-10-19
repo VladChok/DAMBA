@@ -2,7 +2,7 @@
 
 ## Brief and source of direction
 
-Build directly from the supplied VLADCHOK VI brief: Russian editorial story, six compact chapters, Swiss/Bauhaus structure, twentieth-century scientific atlas, explicit evidence levels. Preserve the existing scenario switch and three-parameter financial experiment. No framework migration.
+Build directly from the supplied BERING editorial brief: Russian editorial story, six compact chapters, Swiss/Bauhaus structure, twentieth-century scientific atlas, explicit evidence levels. Preserve the existing scenario switch and three-parameter financial experiment. No framework migration.
 
 Refero live style searches were attempted across Swiss editorial, museum/cartographic, and Bloomberg/Reuters visual-storytelling directions. The service returned `NO_SUBSCRIPTION`; no live Refero screen or style is claimed as reviewed. The fallback research used bundled Refero typography, craft/accessibility, and anti-slop references, the existing article, and the user's named design direction. The user explicitly requested direct implementation, so no separate visual-selection gate was introduced.
 
@@ -33,3 +33,9 @@ Reviewed rendered desktop cover and every chapter, mobile cover and financing bl
 Browser checks cover 320, 360, 390, 768 and 1440 px. Both scenarios, all controls, source navigation, no-JS fallback, reduced motion and animation pause were exercised. Axe WCAG A/AA reports no violations in the tested states. The supplied direction is preserved: prominent 1990, meaningful hue, real geographic outlines, no generic cards or gradients.
 
 Geographic labels use simplified atlas positions. Maps show coastlines, not historical political boundaries. The route is not engineering evidence. Validation used Chromium; Firefox, Safari and a full assistive-technology audit remain outside this pass.
+
+## Graphics-first revision
+
+Visible explanatory paragraphs are shorter; source notes and formulas use closed disclosures. The funding section now pairs persistent expense bars with a cumulative contributions chart using fixed numerical axes. A new Russian politics board connects three conditions to opportunities and risks. Solid violet and dashed red branches preserve meaning without relying only on color. The two historical political anchors have their own source links. No synthetic political indices were introduced.
+
+Anonymous BERING branding replaces the personal signature in the page, docs and stylesheet. The standalone exporter no longer inserts a personal repository URL. Reviewed desktop charts/politics and narrow mobile versions; the browser suite covers the graph endpoint arithmetic, source links, disclosure behavior and offline export.
