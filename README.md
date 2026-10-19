@@ -1,31 +1,62 @@
 # BERING / 1990
 
-Interactive counterfactual-history microsite about the Bering Strait, Pyotr Borisov's climate-engineering dam concept, and a hypothetical Soviet–American agreement in 1990.
+**1990. Год, когда Россия и Америка могли соединиться.**
 
-## Quick start
+Интерактивная статья VLADCHOK о климатической идее Петра Борисова и отдельном, гипотетическом транспортном переходе. Шесть глав: идея, момент, деньги, две истории, препятствия, открытый вопрос.
 
-Open `index.html` in any browser. No build, network connection, packages, or keys are required for the UI. Publishing with GitHub Pages: create a repository, add these files to its root, then Settings → Pages → Deploy from a branch → main / root.
+## Запуск
 
-## Research integrity
+Требуется Node.js 22.12 или новее. У опубликованной страницы **нет runtime-зависимостей**, удалённых шрифтов, аналитики, ключей или запросов к API.
 
-- **FACT:** Historic proposals and 1990 diplomatic documents.
-- **HYPOTHESIS:** A June 1990 mega-project agreement, banking arrangements, partner involvement, and historical outcomes.
-- **SCENARIO VALUES:** $120 billion and its six categories are illustrative, not a sourced engineering estimate.
-- Climate-changing dam and transport link are different technical proposals. A transport corridor would require extensive access railway construction beyond the strait.
+```sh
+npm ci
+npm run build
+npm run preview
+```
 
-For details, see `research.md` and `CODEX_BRIEF.md`.
+Открыть `http://127.0.0.1:4173`. `dist/` содержит готовый статический сайт. Для простой сборки и сервера установка пакетов не нужна: оба скрипта используют только Node.js. Установка нужна для тестов и повторной генерации карт.
 
-## Tech
+Автономный файл для открытия двойным щелчком: `npm run export -- /absolute/path/bering-1990.html`. Он включает CSS, скрипты и карты; не требует сервера. В нём параметры не сохраняются в URL при открытии с диска. Для обычной версии с ES-модулями нужен HTTP-сервер. При открытии через `file://` текст, базовая модель и раскрываемые пояснения читаются, но браузер может заблокировать интерактивный JavaScript.
 
-Standalone HTML, accessible CSS and JavaScript, no third-party dependencies. SVG visuals are deliberately stylized and not GIS-accurate. No analytics/tracking.
+## Взаимодействия
 
-## Next iterations
+- Историческая шкала 1957–1991: пять кнопок, ссылки на источники; Tab, Enter, пробел, стрелки, Home/End.
+- Модель: бюджет, иностранная доля, горизонт финансирования. Меняются все суммы, вклады партнёров, толщина потоков, категории расходов и доступное описание графика.
+- Реальность / альтернатива: переключаются события, условия, тип доказательства и схема ветвления.
+- Параметры и ветка сохраняются в URL, например `?cost=180&share=50&years=20&future=alternative#money`.
+- Анимацию потоков можно остановить. При `prefers-reduced-motion: reduce` анимация и плавная прокрутка отключены; вне экрана потоки приостановлены.
+- Текст, исходные значения и раскрываемые блоки доступны без JavaScript. При отказе JS управляющие элементы скрыты, а пояснение альтернативы остаётся видимым.
 
-1. Validate documents, dates, and financing ranges with primary references.
-2. Add optional GIS-backed map and sourced historic budget benchmarks.
-3. Add scenario state to URL, keyboard tests, and mobile UX review.
-4. Avoid publishing synthetic GDP lines or deterministic claims about bank adoption, Japan, or Europe.
+## Проверки
 
-## License
+```sh
+npm test
+npx playwright install chromium
+npm run test:browser
+```
 
-No license assigned yet. Repository owner should choose one before accepting external contributions.
+В Linux CI установка браузера: `npx playwright install --with-deps chromium`. При необходимости использовать существующий Chromium можно задать переменную `PLAYWRIGHT_EXECUTABLE_PATH`. Для уже запущенного сервера — `SKIP_TEST_SERVER=1`.
+
+Проверяются арифметика всех допустимых сочетаний ползунков, крайние и некорректные URL-параметры, клавиатура, обе истории, цитаты, сброс, пауза, reduced motion, режим без JS, отсутствие горизонтального переполнения и автоматический аудит axe WCAG A/AA на 320, 360, 390, 768 и 1440 px. Это не заменяет полный ручной аудит доступности или проверку всех браузеров.
+
+## Публикация в GitHub Pages
+
+Вариант без сборки на сервере: после принятия изменений выбрать **Settings → Pages → Deploy from a branch → main / root**. Корневой `index.html` и относительные URL работают под `/DAMBA/`.
+
+Другой статический хостинг: загрузить содержимое `dist/`. Встроенного изменения настроек Pages и автоматической публикации в этой ветке нет; CI проверяет сборку и интерфейс. Слияние и переключение публичного сайта остаются отдельным шагом владельца.
+
+## Файлы
+
+- `index.html` — весь статический текст, источники, семантическая разметка и схемы.
+- `styles.css` — адаптивная сетка и семантические цвета.
+- `app.js` — прогрессивное улучшение, события, URL, анимации.
+- `model.js` — независимая финансовая арифметика и валидация URL.
+- `assets/` — локальные SVG. Карты подготовлены из Natural Earth (public domain), 1:110m для полушария и 1:50m для пролива. `npm run maps` воспроизводит их.
+- `research.md` — происхождение дат, допущения и ограничения.
+- `DESIGN.md` — зафиксированные решения и визуальная проверка.
+
+## Достоверность
+
+FACT, MODEL и HYPOTHESIS всегда различаются. $120 млрд — авторская модель транспортного коридора, не архивная смета; климатические насосы исключены. Договор о строительстве в 1990 году, гарантированное сохранение СССР и экономический успех не утверждаются. Источники инициатора проекта отмечены как заинтересованные; первичная регистрационная запись 1957 года не проверена.
+
+Лицензия авторского кода и текста пока не назначена. Для карт отдельно действует общественное достояние Natural Earth.

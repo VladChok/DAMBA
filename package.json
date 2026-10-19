@@ -1,0 +1,22 @@
+{
+  "name": "bering-1990",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "export": "node scripts/export.mjs",
+    "preview": "node scripts/serve.mjs",
+    "test": "node --test tests/model.test.mjs",
+    "test:browser": "playwright test",
+    "maps": "node scripts/maps.mjs"
+  },
+  "engines": { "node": ">=22.12" },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.56.1",
+    "d3-geo": "^3.1.1",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2"
+  }
+}

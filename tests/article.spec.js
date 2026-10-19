@@ -1,0 +1,90 @@
+import { test, expect } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+import { execFileSync } from 'node:child_process';
+import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
+
+test('six chapters, navigation, source disclosures and both stories work by keyboard', async ({ page }) => {
+  const errors = []; page.on('pageerror', error => errors.push(error.message));
+  await page.goto('/');
+  await expect(page.locator('main > section')).toHaveCount(6);
+  await page.locator('[data-year="1990"]').focus(); await page.keyboard.press('ArrowLeft');
+  await expect(page.locator('#timeline-title')).toHaveText('Встреча на Мальте.');
+  await page.keyboard.press('End'); await expect(page.locator('#timeline-title')).toHaveText('Меняется само государство.');
+  await page.locator('#alt').focus(); await page.keyboard.press('Enter');
+  await expect(page.locator('#alt')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('#future-events')).toContainText('Капитал и институты');
+  await expect(page).toHaveURL(/future=alternative/);
+  await page.keyboard.press('ArrowLeft'); await expect(page.locator('#real')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('#future-events')).toContainText('Россия вступает в ВТО');
+  await page.locator('.sources summary').click(); await expect(page.locator('.sources')).not.toHaveAttribute('open');
+  await page.locator('#timeline-source').click(); await expect(page.locator('.sources')).toHaveAttribute('open', '');
+  await expect(page.locator('#source-collapse')).toBeInViewport();
+  expect(errors).toEqual([]);
+});
+test('sliders update totals, partner widths, accessible description, categories and URL', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#cost').focus(); await page.keyboard.press('End');
+  await expect(page.locator('#foreign')).toHaveText('$180 млрд');
+  await expect(page.locator('#total-number')).toHaveText('300');
+  await page.locator('#share').focus(); await page.keyboard.press('Home');
+  await expect(page.locator('#foreign')).toHaveText('$0 млрд');
+  await expect(page.locator('#domestic')).toHaveText('$300 млрд');
+  await expect(page.locator('#flow-1')).toHaveAttribute('stroke-width', '0');
+  await expect(page.locator('#capital-desc')).toContainText('СССР: $300 млрд');
+  await page.locator('#years').focus(); await page.keyboard.press('Home');
+  await expect(page.locator('#annual')).toHaveText('$60 млрд');
+  await page.reload(); await expect(page.locator('#cost')).toHaveValue('300');
+  await page.locator('#reset-model').click(); await expect(page.locator('#annual')).toHaveText('$8 млрд');
+  await expect(page.locator('#partner-svg-2')).toHaveText('$21,6 млрд · 18%');
+  await page.locator('#money details summary').click();
+  await expect(page.locator('.budget-row strong').first()).toHaveText('$65 млрд');
+});
+for (const width of [320, 360, 390, 768, 1440]) test(`layout and accessibility at ${width}px`, async ({ page }) => {
+  await page.setViewportSize({ width, height: 900 }); await page.goto('/');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await expect(page.locator('h1')).toBeVisible();
+  await page.locator('#alt').click();
+  await page.locator('#conditions summary').click();
+  const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+  expect(accessibility.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) }))).toEqual([]);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: `test-results/article-${width}.png`, fullPage: true });
+});
+test('reduced motion, pause and readable static fallback', async ({ browser }) => {
+  const context = await browser.newContext({ reducedMotion: 'reduce' });
+  const page = await context.newPage(); await page.goto('/');
+  await expect(page.locator('#motion-toggle')).toBeDisabled();
+  expect(await page.locator('.flow-pulses').evaluate(el => getComputedStyle(el).animationName)).toBe('none');
+  await context.close();
+  const staticContext = await browser.newContext({ javaScriptEnabled: false });
+  const staticPage = await staticContext.newPage(); await staticPage.goto('/');
+  await expect(staticPage.locator('h1')).toBeVisible();
+  await expect(staticPage.locator('#foreign')).toHaveText('$72 млрд');
+  await expect(staticPage.locator('#alt')).not.toBeVisible();
+  await expect(staticPage.getByText('Альтернативная ветка:', { exact: false })).toBeVisible();
+  await staticPage.locator('#money details summary').click();
+  await expect(staticPage.locator('.budget-row').first()).toBeVisible();
+  await staticContext.close();
+});
+test('animations can be paused and resume when requested', async ({ page }) => {
+  await page.goto('/#money'); await page.locator('#motion-toggle').click();
+  await expect(page.locator('#motion-toggle')).toHaveAttribute('aria-pressed', 'false');
+  await expect(page.locator('#money')).toHaveClass(/flow-paused/);
+  await page.locator('#motion-toggle').click();
+  await expect(page.locator('#motion-toggle')).toHaveAttribute('aria-pressed', 'true');
+});
+
+test('standalone export works from disk with no network', async ({ page }) => {
+  const file = resolve('test-results/standalone.html');
+  execFileSync(process.execPath, ['scripts/export.mjs', file]);
+  await page.context().setOffline(true);
+  const errors = []; page.on('pageerror', error => errors.push(error.message));
+  await page.goto(pathToFileURL(file).href);
+  await page.locator('#alt').click();
+  await expect(page.locator('#scenario-title')).toContainText('об исследовании');
+  await page.locator('#cost').focus(); await page.keyboard.press('End');
+  await expect(page.locator('#total-number')).toHaveText('300');
+  expect(await page.locator('.cover-map img').evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
+  expect(errors).toEqual([]);
+});
